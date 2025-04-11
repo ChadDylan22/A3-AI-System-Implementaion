@@ -101,11 +101,11 @@ public class EnemyAi : MonoBehaviour
             {
                 val = false;
             }
-             Debug.DrawLine(castPoint.position, endPos, Color.yellow);
+             //Debug.DrawLine(castPoint.position, endPos, Color.yellow);
         }
         else 
         {
-             Debug.DrawLine(castPoint.position, endPos, Color.blue);
+             //Debug.DrawLine(castPoint.position, endPos, Color.blue);
         }
 
         return val;
