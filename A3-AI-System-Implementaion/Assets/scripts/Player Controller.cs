@@ -2,54 +2,40 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    private CharacterController character;
-    private Vector3 direction;
-   
-    // values for gravity and hight of jump
-    public float gravity = 9.81f * 2f;
-    public float jumpForce = 8f;
-    public float speed = 5f;
+    private new Rigidbody2D rigidbody;
+
+    private Vector2 velocity;
+    private float inputAxis;
+
+    public float moveSpeed = 8f;
+    public float maxJumpHeight = 5f;
+    public float maxJumpTime = 1f;
+
+    public float jumpForce => (2f * maxJumpHeight) / (maxJumpTime / 2f);
+
 
     private void Awake()
     {
-        character = GetComponent<CharacterController>();
-    }
-
-    private void OnEnable()
-    {
-        direction = Vector3.zero;
+        rigidbody = GetComponent<Rigidbody2D>();
     }
 
     private void Update()
-    // Allows code to make the player jump if space bar is pressed
     {
-        direction += Vector3.down * gravity * Time.deltaTime;
-
-        if (character.isGrounded)
-        {
-            direction = Vector3.down;
-
-            if (Input.GetButton("Jump"))
-            {
-                direction = Vector3.up * jumpForce;
-            }
-
-            if (Input.GetButton("left")) {
-                direction = Vector3.left * speed;
-            }
-
-             if (Input.GetButton("right")) {
-                direction = Vector3.right * speed;
-            }
-        }
-
-        character.Move(direction * Time.deltaTime);
+        HorizontalMovement();   
     }
-// calls GameOver function from the Game Manager script when the player collides with an obstacle, ending the game.
-    private void OnTriggerEnter(Collider other)
+
+    private void HorizontalMovement() 
     {
-        if (other.CompareTag("enemy")){
-            GameManager.Instance.GameOver();
-        }
+        inputAxis = Input.GetAxis("Horizontal");
+        velocity.x = Mathf.MoveTowards(velocity.x, inputAxis * moveSpeed, moveSpeed * Time.deltaTime);
     }
+
+    private void FixedUpdate()
+    {
+        Vector2 position = rigidbody.position;
+        position += velocity * Time.fixedDeltaTime;
+
+        rigidbody.MovePosition(position);   
+    }
+
 }
