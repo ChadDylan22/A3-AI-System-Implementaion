@@ -77,7 +77,7 @@ public class EnemyAi : MonoBehaviour
        */ 
     }
 
-    bool CanSeePlayer(float distance)
+    bool CanSeePlayer(float distance) //Allows the enemy to chase the player based off of sight based sensor
     {
         bool val = false;
         float castDist = distance;

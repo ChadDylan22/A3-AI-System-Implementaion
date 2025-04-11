@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    //Properties / Variables
     private new Rigidbody2D rigidbody;
 
     private Vector2 velocity;
@@ -18,12 +19,12 @@ public class Player : MonoBehaviour
     public bool jumping { get; private set; }
 
 
-    private void Awake()
+    private void Awake() //gets the rigidbody component from player
     {
         rigidbody = GetComponent<Rigidbody2D>();
     }
 
-    private void Update()
+    private void Update() //Calls the Circlecast to determine if player is grounded
     {
         HorizontalMovement(); 
 
@@ -36,13 +37,13 @@ public class Player : MonoBehaviour
           ApplyGravity();
     }
 
-    private void HorizontalMovement() 
+    private void HorizontalMovement() //Gets key inputs from unity's input system
     {
         inputAxis = Input.GetAxis("Horizontal");
         velocity.x = Mathf.MoveTowards(velocity.x, inputAxis * moveSpeed, moveSpeed * Time.deltaTime);
     }
 
-    private void GroundedMovement()
+    private void GroundedMovement() //Determins how movement should work if player is grounded / allows jumping only when grounded
     {
         velocity.y = Mathf.Max(velocity.y, 0f);
         jumping = velocity.y > 0f;
@@ -54,7 +55,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void ApplyGravity()
+    private void ApplyGravity() //Applies gravifty when player is falling
     {
         bool falling = velocity.y < 0f || !Input.GetButton("Jump");
         float multiplier = falling ? 2f : 1f;
@@ -62,7 +63,7 @@ public class Player : MonoBehaviour
         velocity.y = Mathf.Max(velocity.y, gravity / 2f);
     }
 
-    private void FixedUpdate()
+    private void FixedUpdate() //Allows the rigidbody to move the player
     {
         Vector2 position = rigidbody.position;
         position += velocity * Time.fixedDeltaTime;

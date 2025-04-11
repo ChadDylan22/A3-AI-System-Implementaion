@@ -2,6 +2,7 @@ using UnityEngine;
 
 public static class Extensions
 {
+    //Allows player script to use circle cast when finding if player is grounded
     private static LayerMask layermask = LayerMask.GetMask("Default");
    public static bool Raycast(this Rigidbody2D rigidbody, Vector2 direction)
    {
